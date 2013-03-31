@@ -1,7 +1,8 @@
 <?php 
   require 'db.php';
-  if(!empty($_POST['room']) && db_get($_POST['room'])) {
-    $session = db_get($_POST['room']);
+  
+  if(!empty($_GET['id']) && db_get($_GET['id'])) {
+    $session = db_get($_GET['id']);
   }
   else {
     exit(" Get a room");
@@ -13,7 +14,8 @@
 
   $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET);
 
-  $token = $apiObj->generateToken(API_Config::API_SECRET);
+  $token = $apiObj->generateToken($session);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,9 +23,11 @@
     <title>Test Audio-Only</title>
 	<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+    TB.setLogLevel(TB.DEBUG);
     var apiKey = "<?php echo API_Config::API_KEY; ?>"; // Replace with your API key. See https://dashboard.tokbox.com/projects
     var sessionId = '<?php echo $session; ?>'; // Replace with your own session ID. See https://dashboard.tokbox.com/projects 
     var token = '<?php echo $token; ?>'; // Replace with a generated token. See https://dashboard.tokbox.com/projects
+
 
     var subscribers = {};
     var publisher;
@@ -150,7 +154,7 @@
 					publisherProperties.publishAudio = false;
 				}
 				
-				publisher = TB.initPublisher("", publisherDiv.id, publisherProperties);
+				publisher = TB.initPublisher(apiKey, publisherDiv.id, publisherProperties);
 				session.publish(publisher); 
 													// Pass the replacement div id to the publish method
 				var publisherControlsDiv = getPublisherControls();

@@ -1,6 +1,6 @@
 <?php
 
-function dbget($key){
+function db_get($key){
 	$str = file_get_contents('db.txt');
 	$retval = null;
 	foreach(explode("\n",$str) as $line){
@@ -12,7 +12,7 @@ function dbget($key){
 	return $retval;
 }
 
-function dbput($key,$value){
+function db_put($key,$value){
 	$file=fopen("db.txt","a");
 	fwrite($file,$key);
 	fwrite($file," ");
@@ -21,6 +21,4 @@ function dbput($key,$value){
 	fclose($file);
 }
 
-dbput("a","c");
-print(dbget("a"));
 ?>
