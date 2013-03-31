@@ -23,6 +23,7 @@
 <head>
   <title> League Skype | Room - <?php echo $room; ?></title>
 	<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery.js" type="text/javascript"> </script>
   <link rel="stylesheet" href="css/foundation.min.css" />
   <link rel="stylesheet" href="css/app.css" />
 	<script type="text/javascript" charset="utf-8">
@@ -335,6 +336,22 @@
 			document.getElementById(id).style.display = 'none';
 		}
 
+    var now = 0;
+
+    function startclock() {
+      $('#clock').show();
+      setInterval(tick, 1000);
+    }
+
+    function tick() {
+      now += 1;
+      mins = Math.floor(now / 60);
+      secs = now % 60;
+
+      str = mins + ':' + secs;
+      $('#clock').html(str);
+    }
+
     </script>
 </head>
 <body>
@@ -347,9 +364,11 @@
        	<input class="button alert" type="button" value="Leave" id ="disconnectLink" onClick="disconnect()" style="display:none" />
 	</div>
 
-  <div class="twelve columns" id="clock">
+  <div class="twelve columns" id="clock" style="display:none">
     1:45:50
   </div>
+  
+  <button onclick="startclock()"> Start </button>
   <div id="videoPanel" style="display:block"></div>
   <div style="display:none">
   <div id="fuckyou" style="display:none"> </div>
