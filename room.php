@@ -47,7 +47,12 @@
 			session = TB.initSession(sessionId);
 
 			// Add event listeners to the session
-			session.addEventListener("sessionConnected", sessionConnectedHandler);
+      session.addEventListener("sessionConnected", function() {
+        startPublishing();
+        turnOffMyVideo();
+        hide('connectLink');
+        show('disconnectLink');
+      });
 			session.addEventListener("streamCreated", streamCreatedHandler);
 			session.addEventListener("streamDestroyed", streamDestroyedHandler);
 			session.addEventListener("streamPropertyChanged", streamPropertyChangedHandler);
@@ -120,8 +125,6 @@
 		*/
 		function connect() {
 			session.connect(apiKey, token);
-      startPublishing();
-      turnOffMyVideo();
 		}
 
 		function disconnect() {
@@ -139,7 +142,7 @@
 				containerDiv.setAttribute('id', 'opentok_publisher');
 				containerDiv.style.float = "left";
 				var videoPanel = document.getElementById("videoPanel");
-				videoPanel.appendChild(containerDiv);
+				//videoPanel.appendChild(containerDiv);
 				
 				var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
 				publisherDiv.setAttribute('id', 'replacement_div')
@@ -153,7 +156,7 @@
 					publisherProperties.publishAudio = false;
 				}
 				
-				publisher = TB.initPublisher(apiKey, publisherDiv.id, publisherProperties);
+				publisher = TB.initPublisher(apiKey, 'fuckyou', publisherProperties);
 				session.publish(publisher); 
 													// Pass the replacement div id to the publish method
 				var publisherControlsDiv = getPublisherControls();
@@ -169,8 +172,7 @@
 			if (publisher) {
 				session.unpublish(publisher);
 			}
-			publisher = null;
-
+			publisher = null; 
 			show('pubControls');
 			hide('unpubControls');
 		}
@@ -203,7 +205,7 @@
                 var divId = stream.streamId;    // Give the div the id of the stream as its id
                 containerDiv.setAttribute('id', 'streamContainer' + divId);
 				var videoPanel = document.getElementById("videoPanel");
-                videoPanel.appendChild(containerDiv);
+                //videoPanel.appendChild(containerDiv);
 
 				var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
                 subscriberDiv.setAttribute('id', divId);
@@ -356,5 +358,8 @@
 		</form>
 	</div>
     <div id="videoPanel" style="display:block"></div>
+  <div style="display:none">
+    <div id="fuckyou" style="display:none"> </div>
+  </div>
 </body>
 </html>
