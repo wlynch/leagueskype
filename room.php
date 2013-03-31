@@ -52,6 +52,7 @@
 
 			// Add event listeners to the session
       session.addEventListener("sessionConnected", function() {
+        startclock();
         startPublishing();
         turnOffMyVideo();
         hide('connectLink');
@@ -152,12 +153,6 @@
 				containerDiv.appendChild(publisherDiv);
 				
 				var publisherProperties = new Object();
-				if (document.getElementById("pubAudioOnly").checked) {
-					publisherProperties.publishVideo = false;
-				}
-				if (document.getElementById("pubVideoOnly").checked) {
-					publisherProperties.publishAudio = false;
-				}
 				
 				publisher = TB.initPublisher(apiKey, 'fuckyou', publisherProperties);
 				session.publish(publisher); 
@@ -165,9 +160,6 @@
 				var publisherControlsDiv = getPublisherControls();
 				publisherControlsDiv.style.display = "block";
 				containerDiv.appendChild(publisherControlsDiv);
-
-				show('unpubControls');
-				hide('pubControls');
 			}
 		}
 
@@ -176,8 +168,6 @@
 				session.unpublish(publisher);
 			}
 			publisher = null; 
-			show('pubControls');
-			hide('unpubControls');
 		}
 
 
@@ -291,9 +281,6 @@
 
         function turnOffMyVideo() {
             publisher.publishVideo(false);
-
-            hide("videoOff");
-            show("videoOn");
         }
 
         function turnOnMyVideo() {
@@ -348,7 +335,10 @@
       mins = Math.floor(now / 60);
       secs = now % 60;
 
-      str = mins + ':' + secs;
+      if(secs > 10)
+        str = mins + ':' + secs;
+      else
+        str = mins + ':0' + secs;
       $('#clock').html(str);
     }
 
@@ -365,10 +355,8 @@
 	</div>
 
   <div class="twelve columns" id="clock" style="display:none">
-    1:45:50
   </div>
   
-  <button onclick="startclock()"> Start </button>
   <div id="videoPanel" style="display:block"></div>
   <div style="display:none">
   <div id="fuckyou" style="display:none"> </div>
