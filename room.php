@@ -62,8 +62,6 @@
 			deviceManager = TB.initDeviceManager(apiKey);
 
 			show('disconnectLink');
-			show('pubControls');
-			show('deviceManagerControls');
 			hide('connectLink');
         }
 
@@ -122,6 +120,8 @@
 		*/
 		function connect() {
 			session.connect(apiKey, token);
+      startPublishing();
+      turnOffMyVideo();
 		}
 
 		function disconnect() {
@@ -129,7 +129,6 @@
 			hide('disconnectLink');
 			hide('pubControls');
 			hide('unpubControls');
-			hide('deviceManagerControls');
 		}
 
 		// Called when user wants to start publishing to the session
