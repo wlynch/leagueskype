@@ -20,7 +20,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test Audio-Only</title>
+  <title> Room - <?php echo $room; ?></title>
 	<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
     TB.setLogLevel(TB.DEBUG);
@@ -61,20 +61,20 @@
 		//--------------------------------------
 		//  OPENTOK EVENT HANDLERS
 		//--------------------------------------
-        function sessionConnectedHandler(event) {
-            subscribeToStreams(event.streams);
+    function sessionConnectedHandler(event) {
+      subscribeToStreams(event.streams);
 
-			deviceManager = TB.initDeviceManager(apiKey);
+      deviceManager = TB.initDeviceManager(apiKey);
 
 			show('disconnectLink');
 			hide('connectLink');
-        }
+    }
 
-        function streamCreatedHandler(event) {
-            subscribeToStreams(event.streams);
-        }
+    function streamCreatedHandler(event) {
+        subscribeToStreams(event.streams);
+    }
 
-        function streamDestroyedHandler(event) {
+    function streamDestroyedHandler(event) {
 			var publisherContainer = document.getElementById("opentok_publisher");
 			var videoPanel = document.getElementById("videoPanel");
 			for (i = 0; i < event.streams.length; i++) {
@@ -89,7 +89,7 @@
 					}
 				}
 			}
-        }
+    }
 		
 		function streamPropertyChangedHandler(event)
 		{
@@ -181,56 +181,56 @@
 		//--------------------------------------
 		//  HELPER METHODS
 		//--------------------------------------
-        function subscribeToStreams(streams) {
-            for (i = 0; i < streams.length; i++) {
-                var stream = streams[i];
-                if (stream.connection.connectionId == session.connection.connectionId) {
-						pubAudioOnly = document.getElementById("pubAudioOnly");
-						pubVideoOnly = document.getElementById("pubVideoOnly"); 
-                        if (pubVideoOnly.checked) {
-							show("audioOn");
-						} else {
-							show("audioOff");
-						}
-                        if (pubAudioOnly.checked) {
-							show("videoOn");
-						} else {
-	                        show("videoOff");
-						}
-                        return;
-                }
+    function subscribeToStreams(streams) {
+        for (i = 0; i < streams.length; i++) {
+            var stream = streams[i];
+            if (stream.connection.connectionId == session.connection.connectionId) {
+              pubAudioOnly = document.getElementById("pubAudioOnly");
+              pubVideoOnly = document.getElementById("pubVideoOnly"); 
+                          if (pubVideoOnly.checked) {
+                show("audioOn");
+              } else {
+                show("audioOff");
+              }
+                          if (pubAudioOnly.checked) {
+                show("videoOn");
+              } else {
+                            show("videoOff");
+              }
+              return;
+            }
 
-                var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
-				containerDiv.className = "subscriberContainer";
-                var divId = stream.streamId;    // Give the div the id of the stream as its id
-                containerDiv.setAttribute('id', 'streamContainer' + divId);
-				var videoPanel = document.getElementById("videoPanel");
-                //videoPanel.appendChild(containerDiv);
+            var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
+            containerDiv.className = "subscriberContainer";
+            var divId = stream.streamId;    // Give the div the id of the stream as its id
+            containerDiv.setAttribute('id', 'streamContainer' + divId);
+            var videoPanel = document.getElementById("videoPanel");
+            //videoPanel.appendChild(containerDiv);
 
-				var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
-                subscriberDiv.setAttribute('id', divId);
-				subscriberDiv.style.cssFloat = "top";
-				containerDiv.appendChild(subscriberDiv);
-                subscribers[stream.streamId] = session.subscribe(stream, divId);
+            var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
+            subscriberDiv.setAttribute('id', divId);
+            subscriberDiv.style.cssFloat = "top";
+            containerDiv.appendChild(subscriberDiv);
+            subscribers[stream.streamId] = session.subscribe(stream, divId);
 
-				var actionDiv = document.createElement('div');
-				var streamId = stream.streamId
-                actionDiv.setAttribute('id', 'action-'+streamId);
-				actionDiv.style.float = "bottom";
-                actionDiv.style.borderStyle = "solid 1px black";
-				
-				var audioControlsDisplay;
-				if (stream.hasAudio) {
-					audioControlsDisplay = "block";
-				} else {
-					audioControlsDisplay = "none";
-				}
-				var videoControlsDisplay;
-				if (stream.hasVideo) {
-					videoControlsDisplay = "block";
-				} else {
-					videoControlsDisplay = "none";
-				}
+            var actionDiv = document.createElement('div');
+            var streamId = stream.streamId
+              actionDiv.setAttribute('id', 'action-'+streamId);
+            actionDiv.style.float = "bottom";
+            actionDiv.style.borderStyle = "solid 1px black";
+
+            var audioControlsDisplay;
+            if (stream.hasAudio) {
+              audioControlsDisplay = "block";
+            } else {
+              audioControlsDisplay = "none";
+            }
+            var videoControlsDisplay;
+            if (stream.hasVideo) {
+              videoControlsDisplay = "block";
+            } else {
+              videoControlsDisplay = "none";
+            }
                 actionDiv.innerHTML = 
 					'<span id="' + streamId +'-audioControls" style="display:' + audioControlsDisplay + '"> \
 					<a href="#" id="'+streamId+'-audioOff" onclick="turnOffHerAudio(\''+streamId+'\');" style="display:block">Turn off audio<\/a>\
@@ -340,26 +340,9 @@
        	<input type="button" value="Connect" id ="connectLink" onClick="connect()" style="display:block" />
        	<input type="button" value="Leave" id ="disconnectLink" onClick="disconnect()" style="display:none" />
 	</div>
-    <div id ="pubControls" style="display:none">
-        <form id="publishForm"> 
-            <input type="button" value="Start Publishing" onClick="startPublishing()" />
-            <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
-            <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
-            <input type="radio" id="pubVideoOnly" name="pubRad" />&nbsp;Video-only
-        </form>
-    </div>
-    <div id ="unpubControls" style="display:none">
-        <input type="button" value="Stop Publishing" onClick="stopPublishing()" style="display:block"/>
-    </div>
-	<div id="deviceManagerControls" style="display:none">
-		<form id="dmForm">
-			<label for="showMic">Show Microphone in Device Manager</label><input type="checkbox" id="showMic" name="showMic" checked="checked" onclick="toggleMicSettings();" />
-			<label for="showCam">Show Camera in Device Manager</label><input type="checkbox" id="showCam" name="showCam" checked="checked" onclick="toggleCamSettings();" />
-		</form>
-	</div>
-    <div id="videoPanel" style="display:block"></div>
+  <div id="videoPanel" style="display:block"></div>
   <div style="display:none">
-    <div id="fuckyou" style="display:none"> </div>
+  <div id="fuckyou" style="display:none"> </div>
   </div>
 </body>
 </html>
