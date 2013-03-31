@@ -37,8 +37,6 @@
     var publisher;
 		var session;
 
-		var deviceManager;
-
 		// Un-comment either of the following to set automatic logging and exception handling.
 		// See the exceptionHandler() method below.
 		// TB.setLogLevel(TB.DEBUG);
@@ -69,8 +67,6 @@
 		//--------------------------------------
     function sessionConnectedHandler(event) {
       subscribeToStreams(event.streams);
-
-      deviceManager = TB.initDeviceManager(apiKey);
 
 			show('disconnectLink');
 			hide('connectLink');
@@ -178,21 +174,6 @@
     function subscribeToStreams(streams) {
         for (i = 0; i < streams.length; i++) {
             var stream = streams[i];
-            if (stream.connection.connectionId == session.connection.connectionId) {
-              pubAudioOnly = document.getElementById("pubAudioOnly");
-              pubVideoOnly = document.getElementById("pubVideoOnly"); 
-                          if (pubVideoOnly.checked) {
-                show("audioOn");
-              } else {
-                show("audioOff");
-              }
-                          if (pubAudioOnly.checked) {
-                show("videoOn");
-              } else {
-                            show("videoOff");
-              }
-              return;
-            }
 
             var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
             containerDiv.className = "subscriberContainer";
