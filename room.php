@@ -365,7 +365,7 @@
   </div>
   
   <div id="videoPanel" style="display:block"></div>
-  <div style="display:none">
+  <div>
   <div id="fuckyou" style="display:none"> </div>
   </div>
 </body>
