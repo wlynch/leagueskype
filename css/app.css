@@ -7,6 +7,6 @@ div.subscriberContainer {
     visibility: hidden;
 }
 
-div#publisher_1 {
+#publisher_1 {
     visibility: hidden;
 }
