@@ -199,7 +199,7 @@
             var divId = stream.streamId;    // Give the div the id of the stream as its id
             containerDiv.setAttribute('id', 'streamContainer' + divId);
             var videoPanel = document.getElementById("videoPanel");
-            //videoPanel.appendChild(containerDiv);
+            videoPanel.appendChild(containerDiv);
 
             var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
             subscriberDiv.setAttribute('id', divId);
