@@ -2,14 +2,14 @@
 
 function dbget($key){
 	$str = file_get_contents('db.txt');
-
+	$retval = null;
 	foreach(explode("\n",$str) as $line){
 		$arr=explode(" ",$line);
 		if ($arr[0] == $key){
-			return $arr[1];
+			$retval = $arr[1];
 		}
 	}
-	return null;
+	return $retval;
 }
 
 function dbput($key,$value){
@@ -21,4 +21,6 @@ function dbput($key,$value){
 	fclose($file);
 }
 
+dbput("a","c");
+print(dbget("a"));
 ?>
