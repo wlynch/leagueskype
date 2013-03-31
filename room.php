@@ -364,7 +364,7 @@
   <div class="twelve columns" id="clock" style="display:none">
   </div>
   
-  <div id="videoPanel" style="display:block"></div>
+  <div id="videoPanel" style="visibility:hidden"></div>
   <div>
   <div id="fuckyou" style="display:none"> </div>
   </div>
