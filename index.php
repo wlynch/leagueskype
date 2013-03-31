@@ -17,6 +17,7 @@
         $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET);
         $sessionObj = $apiObj->create_session();
         $session = $sessionObj->getSessionId();
+        db_put($room, $session);
       }
       header("Location: room.php?id=".$room); 
     }
