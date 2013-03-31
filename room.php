@@ -132,10 +132,10 @@
 		}
 
 		function disconnect() {
+      stopclock();
 			session.disconnect();
 			hide('disconnectLink');
-			hide('pubControls');
-			hide('unpubControls');
+      show('connectLink');
 		}
 
 		// Called when user wants to start publishing to the session
@@ -324,10 +324,16 @@
 		}
 
     var now = 0;
+    var interval = null;
 
     function startclock() {
       $('#clock').show();
-      setInterval(tick, 1000);
+      interval = setInterval(tick, 1000);
+    }
+
+    function stopclock() {
+      clearInterval(interval);
+      $('#clock').hide();
     }
 
     function tick() {
@@ -335,7 +341,7 @@
       mins = Math.floor(now / 60);
       secs = now % 60;
 
-      if(secs > 10)
+      if(secs >= 10)
         str = mins + ':' + secs;
       else
         str = mins + ':0' + secs;
