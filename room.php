@@ -53,7 +53,6 @@
 			// Add event listeners to the session
       session.addEventListener("sessionConnected", function(event) {
         sessionConnectedHandler(event);
-        subscribeToStreams(event.streams);
         startclock();
         startPublishing();
         turnOffMyVideo();
