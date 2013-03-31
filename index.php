@@ -18,7 +18,7 @@
         $sessionObj = $apiObj->create_session();
         $session = $sessionObj->getSessionId();
       }
-      header("Location: /room.php?id=".$room); 
+      header("Location: room.php?id=".$room); 
     }
 ?>
 <!DOCTYPE html>
