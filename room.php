@@ -1,21 +1,32 @@
+<?php 
+  require 'db.php';
+  if(!empty($_POST['room']) && db_get($_POST['room'])) {
+    $session = db_get($_POST['room']);
+  }
+  else {
+    exit(" Get a room");
+  }
+
+  
+  require_once 'API_Config.php';
+  require_once 'OpenTokSDK.php';
+
+  $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET);
+
+  $token = $apiObj->generateToken(API_Config::API_SECRET);
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Test Audio-Only</title>
-	<link href="http://static.opentok.com/opentok/assets/css/demos.css" type="text/css" rel="stylesheet" >
-	<style type="text/javascript">
-		input {
-			display: inline-block;
-		}
-	</style>
 	<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		var apiKey = ""; // Replace with your API key. See https://dashboard.tokbox.com/projects
-		var sessionId = ''; // Replace with your own session ID. See https://dashboard.tokbox.com/projects 
-		var token = ''; // Replace with a generated token. See https://dashboard.tokbox.com/projects
+    var apiKey = "<?php echo API_Config::API_KEY; ?>"; // Replace with your API key. See https://dashboard.tokbox.com/projects
+    var sessionId = '<?php echo $session; ?>'; // Replace with your own session ID. See https://dashboard.tokbox.com/projects 
+    var token = '<?php echo $token; ?>'; // Replace with a generated token. See https://dashboard.tokbox.com/projects
 
-        var subscribers = {};
-        var publisher;
+    var subscribers = {};
+    var publisher;
 		var session;
 
 		var deviceManager;
