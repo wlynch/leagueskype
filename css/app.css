@@ -1,12 +1,9 @@
-div #clock {
-    text-align: center;
-    font-size: 8em;
+span#clock, span#people {
+    font-size: 24px;
+    margin: 10px;
 }
 
-div.subscriberContainer {
-    visibility: hidden;
+div.controls {
+  margin-bottom: 10px;
 }
 
-#publisher_1 {
-    visibility: hidden;
-}

@@ -28,7 +28,11 @@
   <script type="text/javascript">
     $(function() {
 
+      var people = 0;
+
       function subscribeToStreams(session, streams) {
+        people += streams.length;
+        $('#people').html('Number of People: '+people);
         $.each(streams, function(index, stream) {
           if(stream.connection.connectionId != session.connection.connectionId) {
             //add a div to .videos
@@ -50,14 +54,21 @@
 
       var publisher = null;
 
+
       session.addEventListener('sessionConnected', function(event) {
         subscribeToStreams(session, event.streams);
         session.publish(publisher);
         startclock();
       });
 
+
       session.addEventListener('streamCreated', function(event) {
         subscribeToStreams(session, event.streams);
+      });
+
+      session.addEventListener('streamDestroyed', function(event) {
+        people -= event.streams.length;
+        $('#people').html('Number of People: '+people);
       });
 
       $('#connectLink').click(function() {
@@ -66,11 +77,14 @@
 
         $('.videos').append(div);
 
-        publisher = TB.initPublisher(apiKey, 'publisher', {});
+        var name = prompt("Enter your name");
+
+        publisher = TB.initPublisher(apiKey, 'publisher', {name: name});
         session.connect(apiKey, token);
         $('#connectLink').hide();
         $('#disconnectLink').show();
         $('#toggleVideo').show();
+        $('#people').show();
       });
 
       $('#disconnectLink').click(function() {
@@ -79,6 +93,7 @@
         $('#connectLink').show();
         $('#disconnectLink').hide();
         $('#toggleVideo').hide();
+        $('#people').hide();
       });
 
       $('#toggleVideo').click(function() {
@@ -116,7 +131,7 @@
         str = mins + ':' + secs;
       else
         str = mins + ':0' + secs;
-      $('#clock').html(str);
+      $('#clock').html('Call Timer: ' + str);
     }
 
   </script>  
@@ -126,16 +141,16 @@
     <h1> You are in Room <?php echo $room; ?> </h1>
     <p> Anyone can join the call by going to this URL </p>
     <input type="text" width="200" value="http://wlyn.ch/leagueskype/room.php?id=<?php echo $room; ?>" />
-    <div id="sessionControls">
-          <input class="button success" type="button" value="Connect to the Call" id ="connectLink" style="display:block" />
-          <input class="button alert" type="button" value="Leave" id ="disconnectLink" style="display:none" />
-          <input class="button" type="button" value="Disable Video" id="toggleVideo" style="display:none" />
-    </div>
+  </div>
+  <div class="row controls">
+    <input class="button success" type="button" value="Connect to the Call" id ="connectLink" style="display:block" />
+    <input class="button alert" type="button" value="Leave" id ="disconnectLink" style="display:none" />
+    <input class="button" type="button" value="Disable Video" id="toggleVideo" style="display:none" />
+    <span id="clock" style="display:none"></span>
+    <span id="people" style="display:none"></span>
+  </div>
 
-    <div class="twelve columns" id="clock" style="display:none">
-    </div>
-    <div class="videos">
-    </div>
+  <div class="row videos">
   </div>
 </body>
 </html>
