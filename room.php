@@ -70,6 +70,7 @@
         session.connect(apiKey, token);
         $('#connectLink').hide();
         $('#disconnectLink').show();
+        $('#toggleVideo').show();
       });
 
       $('#disconnectLink').click(function() {
@@ -77,6 +78,19 @@
         session.disconnect();
         $('#connectLink').show();
         $('#disconnectLink').hide();
+        $('#toggleVideo').hide();
+      });
+
+      $('#toggleVideo').click(function() {
+        if(!$(this).data('disabled')) {
+            publisher.publishVideo(false);
+            $(this).data('disabled', true);
+            $(this).val('Enable Video');
+        } else {
+            publisher.publishVideo(true);
+            $(this).data('disabled', false);
+            $(this).val('Disable Video');
+        }
       });
     });
 
@@ -105,7 +119,6 @@
       $('#clock').html(str);
     }
 
-
   </script>  
 </head>
 <body>
@@ -116,6 +129,7 @@
     <div id="sessionControls">
           <input class="button success" type="button" value="Connect to the Call" id ="connectLink" style="display:block" />
           <input class="button alert" type="button" value="Leave" id ="disconnectLink" style="display:none" />
+          <input class="button" type="button" value="Disable Video" id="toggleVideo" style="display:none" />
     </div>
 
     <div class="twelve columns" id="clock" style="display:none">
