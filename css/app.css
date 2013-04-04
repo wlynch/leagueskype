@@ -2,3 +2,11 @@ div #clock {
     text-align: center;
     font-size: 8em;
 }
+
+div.subscriberContainer {
+    visibility: hidden;
+}
+
+#publisher_1 {
+    visibility: hidden;
+}

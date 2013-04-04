@@ -37,8 +37,6 @@
     var publisher;
 		var session;
 
-		var deviceManager;
-
 		// Un-comment either of the following to set automatic logging and exception handling.
 		// See the exceptionHandler() method below.
 		// TB.setLogLevel(TB.DEBUG);
@@ -53,7 +51,6 @@
 			// Add event listeners to the session
       session.addEventListener("sessionConnected", function(event) {
         sessionConnectedHandler(event);
-        subscribeToStreams(event.streams);
         startclock();
         startPublishing();
         turnOffMyVideo();
@@ -70,8 +67,6 @@
 		//--------------------------------------
     function sessionConnectedHandler(event) {
       subscribeToStreams(event.streams);
-
-      deviceManager = TB.initDeviceManager(apiKey);
 
 			show('disconnectLink');
 			hide('connectLink');
@@ -179,28 +174,13 @@
     function subscribeToStreams(streams) {
         for (i = 0; i < streams.length; i++) {
             var stream = streams[i];
-            if (stream.connection.connectionId == session.connection.connectionId) {
-              pubAudioOnly = document.getElementById("pubAudioOnly");
-              pubVideoOnly = document.getElementById("pubVideoOnly"); 
-                          if (pubVideoOnly.checked) {
-                show("audioOn");
-              } else {
-                show("audioOff");
-              }
-                          if (pubAudioOnly.checked) {
-                show("videoOn");
-              } else {
-                            show("videoOff");
-              }
-              return;
-            }
 
             var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
             containerDiv.className = "subscriberContainer";
             var divId = stream.streamId;    // Give the div the id of the stream as its id
             containerDiv.setAttribute('id', 'streamContainer' + divId);
             var videoPanel = document.getElementById("videoPanel");
-            //videoPanel.appendChild(containerDiv);
+            videoPanel.appendChild(containerDiv);
 
             var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
             subscriberDiv.setAttribute('id', divId);
@@ -365,8 +345,8 @@
   <div class="twelve columns" id="clock" style="display:none">
   </div>
   
-  <div id="videoPanel" style="display:block"></div>
-  <div style="display:none">
+  <div id="videoPanel" style="visibility:hidden"></div>
+  <div>
   <div id="fuckyou" style="display:none"> </div>
   </div>
 </body>
