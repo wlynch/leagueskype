@@ -31,7 +31,15 @@
       function subscribeToStreams(session, streams) {
         $.each(streams, function(index, stream) {
           if(stream.connection.connectionId != session.connection.connectionId) {
-            session.subscribe(stream);
+            //add a div to .videos
+
+            var div = $('<div></div>');
+            var id = 'stream-'+stream.connection.connectionId;
+            div.attr('id', id);
+
+            $('.videos').append(div);
+
+            session.subscribe(stream, id, {});
           }
         });
       }
@@ -39,19 +47,65 @@
       var session = TB.initSession("<?= $session ?>"); 
       var apiKey = "<?= API_Config::API_KEY ?>";
       var token = "<?= $token ?>";
+
+      var publisher = null;
+
       session.addEventListener('sessionConnected', function(event) {
         subscribeToStreams(session, event.streams);
-        session.publish();
+        session.publish(publisher);
+        startclock();
       });
 
       session.addEventListener('streamCreated', function(event) {
         subscribeToStreams(session, event.streams);
       });
 
-      session.connect(apiKey, token);
+      $('#connectLink').click(function() {
+        var div = $('<div></div>');
+        div.attr('id', 'publisher');
+
+        $('.videos').append(div);
+
+        publisher = TB.initPublisher(apiKey, 'publisher', {});
+        session.connect(apiKey, token);
+        $('#connectLink').hide();
+        $('#disconnectLink').show();
+      });
+
+      $('#disconnectLink').click(function() {
+        stopclock();
+        session.disconnect();
+        $('#connectLink').show();
+        $('#disconnectLink').hide();
+      });
     });
 
-    
+    var now = 0;
+    var interval = null;
+
+    function startclock() {
+      $('#clock').show();
+      interval = setInterval(tick, 1000);
+    }
+
+    function stopclock() {
+      clearInterval(interval);
+      $('#clock').hide();
+    }
+
+    function tick() {
+      now += 1;
+      mins = Math.floor(now / 60);
+      secs = now % 60;
+
+      if(secs >= 10)
+        str = mins + ':' + secs;
+      else
+        str = mins + ':0' + secs;
+      $('#clock').html(str);
+    }
+
+
   </script>  
 </head>
 <body>
@@ -59,12 +113,15 @@
     <h1> You are in Room <?php echo $room; ?> </h1>
     <p> Anyone can join the call by going to this URL </p>
     <input type="text" width="200" value="http://wlyn.ch/leagueskype/room.php?id=<?php echo $room; ?>" />
-	<div id="sessionControls">
-       	<input class="button success" type="button" value="Connect to the Call" id ="connectLink" style="display:block" />
-       	<input class="button alert" type="button" value="Leave" id ="disconnectLink" style="display:none" />
-	</div>
+    <div id="sessionControls">
+          <input class="button success" type="button" value="Connect to the Call" id ="connectLink" style="display:block" />
+          <input class="button alert" type="button" value="Leave" id ="disconnectLink" style="display:none" />
+    </div>
 
-  <div class="twelve columns" id="clock" style="display:none">
+    <div class="twelve columns" id="clock" style="display:none">
+    </div>
+    <div class="videos">
+    </div>
   </div>
 </body>
 </html>
