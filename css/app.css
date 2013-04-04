@@ -7,3 +7,10 @@ div.controls {
   margin-bottom: 10px;
 }
 
+.videos div {
+  float: left; 
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  background: white;
+}
