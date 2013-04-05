@@ -21,7 +21,7 @@
 <html>
 <head>
   <title> League Skype | Room - <?php echo $room; ?></title>
-	<script src="http://static.opentok.com/v1.1/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://static.opentok.com/webrtc/v2.0/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="jquery.js" type="text/javascript"> </script>
   <link rel="stylesheet" href="css/foundation.min.css" />
   <link rel="stylesheet" href="css/app.css" />
